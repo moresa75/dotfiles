@@ -4,8 +4,6 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -43,6 +41,15 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 
+set enc=utf-8
+set fenc=utf-8
+set termencoding=utf-8
+set shiftwidth=4
+set textwidth=120
+set expandtab
+set t_Co=256
+syntax on
+set showmatch
 set ruler
 set showmode
 set number
@@ -50,8 +57,9 @@ set noswapfile
 set hlsearch
 set guifont=Monaco:h13
 set linespace=2
-set tabstop=2 #expandtab
+set tabstop=4 
 set autoindent
+set smartindent
 colorscheme industry 
 
 let mapleader = ","
