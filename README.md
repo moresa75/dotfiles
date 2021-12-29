@@ -1,6 +1,4 @@
-
-# conf
-config repo
-    -vimrc
-    -viminfo
-    -zshrc
+config repo includes
+    -.vimrc
+    -.zshrc
+    -.vim/*
