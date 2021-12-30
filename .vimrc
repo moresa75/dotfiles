@@ -1,6 +1,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+set background=dark
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
@@ -21,7 +22,7 @@ set tabstop=4
 set autoindent
 set smartindent
 set belloff=all
-colorscheme industry
+set laststatus=2
 
 let mapleader = ","
 map <leader>t <ESC>:tabnew<CR>
@@ -33,13 +34,20 @@ map <leader>s <ESC>:wq<CR>
 
 nnoremap <leader>g <C-W>h
 nnoremap <leader>h <C-W>l
-
-source ~/vcomments.vim
-map <C-i> :call Comment()<CR>
-map <C-o> :call Uncomment()<CR>
-
 inoremap jk <ESC>
-set laststatus=2
+
+" AnyJump stuff
+" Normal mode: Jump to definition under cursor
+nnoremap <leader>j :AnyJump<CR>
+
+" Visual mode: jump to selected text in visual mode
+xnoremap <leader>j :AnyJumpVisual<CR>
+
+" Normal mode: open previous opened file (after jump)
+nnoremap <leader>ab :AnyJumpBack<CR>
+
+" Normal mode: open last closed search window again
+nnoremap <leader>al :AnyJumpLastResults<CR>
 
 let data_dir = '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -49,14 +57,134 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'pechorin/any-jump.vim'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdtree'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
+colorscheme papercolor
+
 nnoremap <leader>n :NERDTreeFocus<CR>
 autocmd VimEnter * NERDTree
+autocmd vimenter * wincmd p
 " Open the existing NERDTree on each new tab.
 autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 nnoremap <leader>n :NERDTreeFocus<CR>
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" FZF stuff
+" blines
+nmap // :BLines!<CR>
+" Rip grep
+nmap ?? :Rg!<CR>
+" find files in the current buffer
+nmap <leader>p :Files!<CR>
+" commit history for the file
+
+command! Gitlog execute ":BCommits!"
+
+" load new confing for vimrc
+command! Load execute ":source ~/.vimrc"
+
+" function for closing NERDTree after closing the buffer
+autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+function! s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName")
+    if bufwinnr(t:NERDTreeBufName) != -1
+      if winnr("$") == 1
+        q
+      endif
+    endif
+  endif
+endfunction
+
+let s:comment_map = {
+    \   "c": '\/\/',
+    \   "cpp": '\/\/',
+    \   "go": '\/\/',
+    \   "java": '\/\/',
+    \   "javascript": '\/\/',
+    \   "lua": '--',
+    \   "scala": '\/\/',
+    \   "php": '\/\/',
+    \   "python": '#',
+    \   "ruby": '#',
+    \   "rust": '\/\/',
+    \   "sh": '#',
+    \   "desktop": '#',
+    \   "fstab": '#',
+    \   "conf": '#',
+    \   "profile": '#',
+    \   "bashrc": '#',
+    \   "bash_profile": '#',
+    \   "mail": '>',
+    \   "eml": '>',
+    \   "bat": 'REM',
+    \   "ahk": ';',
+    \   "vim": '"',
+    \   "tex": '%',
+    \ }
+
+function! ToggleComment()
+    if has_key(s:comment_map, &filetype)
+        let comment_leader = s:comment_map[&filetype]
+        if getline('.') =~ "^\\s*" . comment_leader . " "
+            " Uncomment the line
+            execute "silent s/^\\(\\s*\\)" . comment_leader . " /\\1/"
+        else
+            if getline('.') =~ "^\\s*" . comment_leader
+                " Uncomment the line
+                execute "silent s/^\\(\\s*\\)" . comment_leader . "/\\1/"
+            else
+                " Comment the line
+                execute "silent s/^\\(\\s*\\)/\\1" . comment_leader . " /"
+            end
+        end
+    else
+        echo "No comment leader found for filetype"
+    end
+endfunction
+
+nnoremap <leader><Space> :call ToggleComment()<cr>
+vnoremap <leader><Space> :call ToggleComment()<cr>
+
+function! LazyGit()
+    execute ":! lazygit"
+endfunction
+
+nnoremap <leader>gg :call LazyGit()<cr>
+
+function! MakeIt()
+    execute ":! make"
+endfunction
+nnoremap <leader>m :call MakeIt()<cr>
+
+
+
+
 

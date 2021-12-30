@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/Users/reza/Desktop/Past/61c/sp21-proj1-moresa75/build'
+let g:netrw_dirhist_2='/Users/reza/.ssh'
+let g:netrw_dirhist_1='/Users/reza/Desktop/project-fa21-skeleton/inputs/large'
+let g:netrw_dirhist_0='/Users/reza/Desktop/project-fa21-skeleton/inputs'
+let g:netrw_dirhist_9='/Users/reza/Desktop/project-fa21-skeleton'
+let g:netrw_dirhist_8='/Users/reza/Desktop/fa21_fpga_team06'
+let g:netrw_dirhist_7='/Users/reza/Desktop/riscv_assembler/riscv-asm/elf'
+let g:netrw_dirhist_6='/Users/reza/.vim'
+let g:netrw_dirhist_5='/Users/reza/Desktop/startGo/main'
+let g:netrw_dirhist_4='/Users/reza'

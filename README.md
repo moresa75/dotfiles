@@ -8,3 +8,6 @@ config repo includes:
 
 
     -.vim/*
+
+
+    - iterm.itermcolors
