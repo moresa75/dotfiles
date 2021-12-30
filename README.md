@@ -1,13 +1,14 @@
+
 config repo includes:
 
 
-    -.vimrc
+    -vimrc
 
 
-    -.zshrc
+    -zshrc
 
 
-    -.vim/*
+    -vim/*
 
 
-    - iterm.itermcolors
+    -iterm.itermcolors
