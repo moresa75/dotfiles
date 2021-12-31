@@ -57,6 +57,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'vim-syntastic/syntastic'
 Plug 'pechorin/any-jump.vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'itchyny/lightline.vim'
@@ -184,7 +185,14 @@ function! MakeIt()
 endfunction
 nnoremap <leader>m :call MakeIt()<cr>
 
+" syntastic config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 
