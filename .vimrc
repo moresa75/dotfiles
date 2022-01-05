@@ -21,9 +21,11 @@ set linespace=2
 set tabstop=4 
 set autoindent
 set smartindent
+set smartcase
 set belloff=all
 set laststatus=2
 set cursorline
+set scrolloff=10
 
 let mapleader = ","
 map <leader>t <ESC>:tabnew<CR>
@@ -58,7 +60,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-    Plug 'nathanaelkane/vim-indent-guides'
     Plug 'vim-syntastic/syntastic'
     Plug 'pechorin/any-jump.vim'
     Plug 'NLKNguyen/papercolor-theme'
@@ -70,7 +71,7 @@ call plug#begin('~/.vim/plugged')
 
 call plug#end()
 
-colorscheme papercolor
+colorscheme PaperColor
 
 nnoremap <leader>n :NERDTreeFocus<CR>
 autocmd VimEnter * NERDTree
@@ -151,6 +152,8 @@ let s:comment_map = {
     \   "ahk": ';',
     \   "vim": '"',
     \   "tex": '%',
+    \   "verilog": '\/\/',
+    \   "systemverilog": '\/\/',
     \ }
 
 function! ToggleComment()
@@ -183,11 +186,8 @@ endfunction
 nnoremap <leader>gg :call LazyGit()<cr>
 
 function! MakeIt()
+    execute ":w"
     execute ":! make"
-endfunction
-
-function! GO()
-    execute ":e ~/.vimrc"
 endfunction
 
 nnoremap <leader>m :call MakeIt()<cr>
@@ -211,6 +211,6 @@ inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 
-" indent guides
-let g:indent_guides_enable_on_vim_startup = 1
 
+" open vimrc
+command! Config execute ":tabnew ~/.vimrc"
