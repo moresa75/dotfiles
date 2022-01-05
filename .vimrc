@@ -60,6 +60,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+    Plug 'jiangmiao/auto-pairs'
     Plug 'vim-syntastic/syntastic'
     Plug 'pechorin/any-jump.vim'
     Plug 'NLKNguyen/papercolor-theme'
@@ -203,14 +204,18 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " Auto close for some
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
-
+" inoremap " ""<left>
+" inoremap ' ''<left>
+" inoremap ( ()<left>
+" inoremap [ []<left>
+" inoremap { {}<left>
+" inoremap {<CR> {<CR>}<ESC>O
+" inoremap {;<CR> {<CR>};<ESC>O
+" inoremap \end <><Esc>?begin<Enter>Vy/<><Enter>pfbcwend<Esc>kddo
+"
+let g:AutoPairsFlyMode = 1
+let g:AutoPairsShortcutBackInsert = '<M-b>'
+au FileType systemverilog let b:AutoPairs = AutoPairsDefine({'begin': 'end//n]'})
 
 " open vimrc
 command! Config execute ":tabnew ~/.vimrc"
