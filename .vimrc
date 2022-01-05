@@ -6,7 +6,7 @@ set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
 set shiftwidth=4
-set textwidth=120
+set textwidth=130
 set expandtab
 set t_Co=256
 syntax on
@@ -23,6 +23,7 @@ set autoindent
 set smartindent
 set belloff=all
 set laststatus=2
+set cursorline
 
 let mapleader = ","
 map <leader>t <ESC>:tabnew<CR>
@@ -57,14 +58,15 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'vim-syntastic/syntastic'
-Plug 'pechorin/any-jump.vim'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'itchyny/lightline.vim'
-Plug 'preservim/nerdtree'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+    Plug 'nathanaelkane/vim-indent-guides'
+    Plug 'vim-syntastic/syntastic'
+    Plug 'pechorin/any-jump.vim'
+    Plug 'NLKNguyen/papercolor-theme'
+    Plug 'itchyny/lightline.vim'
+    Plug 'preservim/nerdtree'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -183,6 +185,11 @@ nnoremap <leader>gg :call LazyGit()<cr>
 function! MakeIt()
     execute ":! make"
 endfunction
+
+function! GO()
+    execute ":e ~/.vimrc"
+endfunction
+
 nnoremap <leader>m :call MakeIt()<cr>
 
 " syntastic config
@@ -203,4 +210,7 @@ inoremap [ []<left>
 inoremap { {}<left>
 inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
+
+" indent guides
+let g:indent_guides_enable_on_vim_startup = 1
 
