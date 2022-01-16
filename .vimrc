@@ -26,7 +26,7 @@ set belloff=all
 set laststatus=2
 set cursorline
 set scrolloff=10
-set modifiable
+"set modifiable
 
 
 let mapleader = ","
@@ -189,12 +189,12 @@ endfunction
 
 nnoremap <leader>gg :call LazyGit()<cr>
 
-function! MakeIt()
+function! Make(target)
     execute ":w"
-    execute ":! make"
+    execute ":! make target"
 endfunction
 
-nnoremap <leader>m :call MakeIt()<cr>
+command! -nargs=1 Make call s:Make(<f-args>)
 
 " syntastic config
 set statusline+=%#warningmsg#
