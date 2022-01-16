@@ -26,6 +26,8 @@ set belloff=all
 set laststatus=2
 set cursorline
 set scrolloff=10
+set modifiable
+
 
 let mapleader = ","
 map <leader>t <ESC>:tabnew<CR>
@@ -60,6 +62,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+    Plug 'itchyny/vim-cursorword'
     Plug 'jiangmiao/auto-pairs'
     Plug 'vim-syntastic/syntastic'
     Plug 'pechorin/any-jump.vim'
@@ -202,6 +205,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_go_checkers=['gofmt']
+
 
 " Auto close for some
 " inoremap " ""<left>
@@ -219,3 +224,4 @@ au FileType systemverilog let b:AutoPairs = AutoPairsDefine({'begin': 'end//n]'}
 
 " open vimrc
 command! Config execute ":tabnew ~/.vimrc"
+
