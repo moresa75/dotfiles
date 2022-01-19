@@ -26,7 +26,7 @@ set belloff=all
 set laststatus=2
 set cursorline
 set scrolloff=10
-"set modifiable
+
 
 
 let mapleader = ","
@@ -208,16 +208,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers=['gofmt']
 
 
-" Auto close for some
-" inoremap " ""<left>
-" inoremap ' ''<left>
-" inoremap ( ()<left>
-" inoremap [ []<left>
-" inoremap { {}<left>
-" inoremap {<CR> {<CR>}<ESC>O
-" inoremap {;<CR> {<CR>};<ESC>O
-" inoremap \end <><Esc>?begin<Enter>Vy/<><Enter>pfbcwend<Esc>kddo
-"
+" auto pairs stuff
 let g:AutoPairsFlyMode = 1
 let g:AutoPairsShortcutBackInsert = '<M-b>'
 au FileType systemverilog let b:AutoPairs = AutoPairsDefine({'begin': 'end//n]'})
@@ -225,3 +216,5 @@ au FileType systemverilog let b:AutoPairs = AutoPairsDefine({'begin': 'end//n]'}
 " open vimrc
 command! Config execute ":tabnew ~/.vimrc"
 
+"man pages
+runtime! ftplugin/man.vim
