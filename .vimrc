@@ -5,7 +5,7 @@ set background=dark
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
-set shiftwidth=4
+set shiftwidth=2
 set textwidth=130
 set expandtab
 set t_Co=256
@@ -18,7 +18,7 @@ set noswapfile
 set hlsearch
 set guifont=Monaco:h13
 set linespace=2
-set tabstop=4 
+set tabstop=2
 set autoindent
 set smartindent
 set smartcase
@@ -36,6 +36,10 @@ map <leader>f <ESC>:tabnext<CR>
 map <leader>q <ESC>:q!<CR>
 map <leader>w <ESC>:w<CR>
 map <leader>s <ESC>:wq<CR>
+
+if (&filetype=='c' || &filetype=='cpp')
+  inoremap .. ->
+endif
 
 nnoremap <leader>g <C-W>h
 nnoremap <leader>h <C-W>l
@@ -62,8 +66,8 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+    Plug 'https://github.com/adelarsq/vim-matchit'
     Plug 'itchyny/vim-cursorword'
-    Plug 'jiangmiao/auto-pairs'
     Plug 'vim-syntastic/syntastic'
     Plug 'pechorin/any-jump.vim'
     Plug 'NLKNguyen/papercolor-theme'
@@ -208,10 +212,15 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_go_checkers=['gofmt']
 
 
-" auto pairs stuff
-let g:AutoPairsFlyMode = 1
-let g:AutoPairsShortcutBackInsert = '<M-b>'
-au FileType systemverilog let b:AutoPairs = AutoPairsDefine({'begin': 'end//n]'})
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
+
+
 
 " open vimrc
 command! Config execute ":tabnew ~/.vimrc"
