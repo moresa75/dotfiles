@@ -31,8 +31,8 @@ set scrolloff=10
 
 let mapleader = ","
 map <leader>t <ESC>:tabnew<CR>
-map <leader>a <ESC>:tabprevious<CR> 
-map <leader>f <ESC>:tabnext<CR>
+nmap <leader><CMD> <ESC>:tabprevious<CR> 
+nmap <leader><TAB> <ESC>:tabnext<CR>
 map <leader>q <ESC>:q!<CR>
 map <leader>w <ESC>:w<CR>
 map <leader>s <ESC>:wq<CR>
@@ -82,10 +82,10 @@ call plug#end()
 colorscheme PaperColor
 
 nnoremap <leader>n :NERDTreeFocus<CR>
-autocmd VimEnter * NERDTree
+"autocmd VimEnter * NERDTree
 autocmd vimenter * wincmd p
 " Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+" autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 nnoremap <leader>n :NERDTreeFocus<CR>
 
 inoremap <silent><expr> <TAB>
@@ -109,10 +109,9 @@ endif
 " FZF stuff
 " blines
 nmap // :BLines!<CR>
-" Rip grep
-nmap ?? :Rg!<CR>
+
 " find files in the current buffer
-nmap <leader>p :Files!<CR>
+nmap <leader>f :Files!<CR>
 " commit history for the file
 
 command! Gitlog execute ":BCommits!"
