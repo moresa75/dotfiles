@@ -1,7 +1,6 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-set background=dark
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
@@ -14,7 +13,6 @@ set showmatch
 set ruler
 set showmode
 set number
-set noswapfile
 set hlsearch
 set guifont=Monaco:h13
 set linespace=2
@@ -27,12 +25,23 @@ set laststatus=2
 set cursorline
 set scrolloff=10
 
-
+set ignorecase              " case insensitive 
+set mouse=v                 " middle-click paste with 
+set incsearch               " incremental search
+set softtabstop=2           " see multiple spaces as tabstops so <BS> does the right thing
+set wildmode=longest,list   " get bash-like tab completions
+set mouse=a                 " enable mouse click
+set clipboard=unnamed       " using system clipboard
+filetype plugin on
+set ttyfast                 " Speed up scrolling in Vim
+set noswapfile              " disable creating swap file
+set background=dark
+set omnifunc=syntaxcomplete
 
 let mapleader = ","
 map <leader>t <ESC>:tabnew<CR>
-nmap <leader><CMD> <ESC>:tabprevious<CR> 
-nmap <leader><TAB> <ESC>:tabnext<CR>
+nmap <leader>z <ESC>:tabprevious<CR> 
+nmap <leader>x <ESC>:tabnext<CR>
 map <leader>q <ESC>:q!<CR>
 map <leader>w <ESC>:w<CR>
 map <leader>s <ESC>:wq<CR>
@@ -45,18 +54,6 @@ nnoremap <leader>g <C-W>h
 nnoremap <leader>h <C-W>l
 inoremap jk <ESC>
 
-" AnyJump stuff
-" Normal mode: Jump to definition under cursor
-nnoremap <leader>j :AnyJump<CR>
-
-" Visual mode: jump to selected text in visual mode
-xnoremap <leader>j :AnyJumpVisual<CR>
-
-" Normal mode: open previous opened file (after jump)
-nnoremap <leader>ab :AnyJumpBack<CR>
-
-" Normal mode: open last closed search window again
-nnoremap <leader>al :AnyJumpLastResults<CR>
 
 let data_dir = '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -65,7 +62,10 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-
+    Plug 'joshdick/onedark.vim'
+    Plug 'dracula/vim', { 'as': 'dracula' }
+    Plug 'ycm-core/YouCompleteMe'
+    Plug 'itchyny/lightline.vim'
     Plug 'https://github.com/adelarsq/vim-matchit'
     Plug 'itchyny/vim-cursorword'
     Plug 'vim-syntastic/syntastic'
@@ -76,17 +76,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
-
 call plug#end()
 
-colorscheme PaperColor
+colorscheme onedark
 
-nnoremap <leader>n :NERDTreeFocus<CR>
 "autocmd VimEnter * NERDTree
-autocmd vimenter * wincmd p
-" Open the existing NERDTree on each new tab.
-" autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <leader>m :NERDTreeClose<CR>
+nnoremap <leader>j :AnyJump<CR>
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -99,40 +96,13 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
 " FZF stuff
 " blines
 nmap // :BLines!<CR>
-
-" find files in the current buffer
 nmap <leader>f :Files!<CR>
-" commit history for the file
-
-command! Gitlog execute ":BCommits!"
 
 " load new confing for vimrc
 command! Load execute ":source ~/.vimrc"
-
-" function for closing NERDTree after closing the buffer
-autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
-
-" Close all open buffers on entering a window if the only
-" buffer that's left is the NERDTree buffer
-function! s:CloseIfOnlyNerdTreeLeft()
-  if exists("t:NERDTreeBufName")
-    if bufwinnr(t:NERDTreeBufName) != -1
-      if winnr("$") == 1
-        q
-      endif
-    endif
-  endif
-endfunction
 
 let s:comment_map = {
     \   "c": '\/\/',
@@ -186,30 +156,17 @@ endfunction
 nnoremap <leader><Space> :call ToggleComment()<cr>
 vnoremap <leader><Space> :call ToggleComment()<cr>
 
-function! LazyGit()
-    execute ":! lazygit"
-endfunction
-
-nnoremap <leader>gg :call LazyGit()<cr>
-
 function! Make(target)
     execute ":w"
     execute ":! make target"
 endfunction
 
-command! -nargs=1 Make call s:Make(<f-args>)
 
-" syntastic config
+runtime! ftplugin/man.vim
+
+highlight SyntasticErrorLine guibg=#2f0000
+highlight SyntasticError guibg=#2f0001
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_go_checkers=['gofmt']
-
 
 inoremap " ""<left>
 inoremap ' ''<left>
@@ -220,9 +177,80 @@ inoremap {<CR> {<CR>}<ESC>O
 inoremap {;<CR> {<CR>};<ESC>O
 
 
+autocmd FileType python set omnifunc=syntaxcomplete
+autocmd FileType c set omnifunc=syntaxcomplete
 
 " open vimrc
 command! Config execute ":tabnew ~/.vimrc"
 
-"man pages
-runtime! ftplugin/man.vim
+let g:ycm_clangd_uses_ycmd_caching = 0
+let g:ycm_clangd_binary_path = exepath("clangd")
+let g:ycm_clangd_args = ['-log=verbose', '-pretty']
+
+let s:rg_base_cmd = "rg -n --pcre2 --unicode"
+" Show line numbers in search rusults
+let g:any_jump_list_numbers = 0
+
+" Auto search references
+let g:any_jump_references_enabled = 1
+
+" Auto group results by filename
+let g:any_jump_grouping_enabled = 0
+
+" Amount of preview lines for each search result
+let g:any_jump_preview_lines_count = 5
+
+" Max search results, other results can be opened via [a]
+let g:any_jump_max_search_results = 10
+
+" Prefered search engine: rg or ag
+let g:any_jump_search_prefered_engine = 'rg -n --pcre2 --json --unicode'
+
+
+" Search results list styles:
+" - 'filename_first'
+" - 'filename_last'
+let g:any_jump_results_ui_style = 'filename_first'
+
+" Any-jump window size & position options
+let g:any_jump_window_width_ratio  = 0.6
+let g:any_jump_window_height_ratio = 0.6
+let g:any_jump_window_top_offset   = 4
+
+" Customize any-jump colors with extending default color scheme:
+" let g:any_jump_colors = { "help": "Comment" }
+
+" Or override all default colors
+let g:any_jump_colors = {
+      \"plain_text":         "Comment",
+      \"preview":            "Comment",
+      \"preview_keyword":    "Operator",
+      \"heading_text":       "Function",
+      \"heading_keyword":    "Identifier",
+      \"group_text":         "Comment",
+      \"group_name":         "Function",
+      \"more_button":        "Operator",
+      \"more_explain":       "Comment",
+      \"result_line_number": "Comment",
+      \"result_text":        "Statement",
+      \"result_path":        "String",
+      \"help":               "Comment"
+      \}
+
+" Disable default any-jump keybindings (default: 0)
+let g:any_jump_disable_default_keybindings = 1
+
+" Remove comments line from search results (default: 1)
+let g:any_jump_remove_comments_from_results = 1
+
+" Custom ignore files
+" default is: ['*.tmp', '*.temp']
+let g:any_jump_ignored_files = ['*.tmp', '*.temp']
+
+" Search references only for current file type
+" (default: false, so will find keyword in all filetypes)
+let g:any_jump_references_only_for_current_filetype = 0
+
+" Disable search engine ignore vcs untracked files
+" (default: false, search engine will ignore vcs untracked files)
+let g:any_jump_disable_vcs_ignore = 0
