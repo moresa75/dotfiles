@@ -4,7 +4,7 @@ filetype off                  " required
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
-set shiftwidth=2
+"set shiftwidth=2
 set textwidth=130
 set expandtab
 set t_Co=256
@@ -62,6 +62,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+    Plug 'kenn7/vim-arsync'
     Plug 'joshdick/onedark.vim'
     Plug 'dracula/vim', { 'as': 'dracula' }
     Plug 'ycm-core/YouCompleteMe'
@@ -100,6 +101,7 @@ endfunction
 " blines
 nmap // :BLines!<CR>
 nmap <leader>f :Files!<CR>
+map  <leader>e :vertical term <CR>
 
 " load new confing for vimrc
 command! Load execute ":source ~/.vimrc"
