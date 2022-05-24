@@ -1,8 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=/opt/homebrew/anaconda3/bin:$PATH
+
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/reza/.oh-my-zsh"
+export PATH=~/ripgrep/ripgrep/complete/_rg:$PATH
 
 
 
@@ -46,7 +49,7 @@ export UPDATE_ZSH_DAYS=60
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
@@ -65,15 +68,24 @@ export UPDATE_ZSH_DAYS=60
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
-function c() {
-    if (( $# == 0 )) 
-        then echo "Add a message." 
-    fi
-    git commit -a -m "$1"
+function gc() {
+    git commit -m $1
 }
 
-function p() {
+function gp() {
     git push "$1"
+}
+
+function gpl() {
+    git pull "$1"
+}
+
+function stat() {
+    git status
+}
+
+function gl() {
+    git log
 }
 
 
@@ -87,6 +99,7 @@ function p() {
 # Add wisely, as too many plugins slow down shell startup.
 
 plugins=(
+        zsh-autosuggestions
         git
 )
 
@@ -101,11 +114,7 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 #Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='mvim'
- fi
+export EDITOR='vim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -118,8 +127,13 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias lg='lazygit'
+alias ...='cd ../..'
 alias lsf='exa -lagF --color-scale --git'
 alias code="/Applications/Visual\ Studio\ Code.app/contents/Resources/app/bin/code"
+alias 162='ssh cs162'
+alias 152='ssh cs152'
+alias xbwrc='ssh -XY rezasjd@bwrcrdsl-1.eecs.berkeley.edu'
 ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 # Add a space in the first prompt
@@ -131,4 +145,24 @@ if [[ $(print -P "%#") =~ "#" ]]; then
 fi
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%{%B%F{black}%K{yellow}%} $user_symbol%{%b%f%k%F{yellow}%} %{%f%}"
 neofetch
+
+# opam configuration
+[[ ! -r /Users/reza/.opam/opam-init/init.zsh ]] || source /Users/reza/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/homebrew/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/homebrew/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/homebrew/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/homebrew/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
