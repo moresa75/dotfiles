@@ -4,7 +4,7 @@ filetype off                  " required
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
-"set shiftwidth=2
+set shiftwidth=2
 set textwidth=130
 set expandtab
 set t_Co=256
@@ -12,6 +12,8 @@ syntax on
 set showmatch
 set ruler
 set showmode
+set showcmd
+set splitright
 set number
 set hlsearch
 set guifont=Monaco:h13
@@ -24,6 +26,9 @@ set belloff=all
 set laststatus=2
 set cursorline
 set scrolloff=10
+set smarttab
+set magic
+set wildmenu
 
 set ignorecase              " case insensitive 
 set mouse=v                 " middle-click paste with 
@@ -256,3 +261,7 @@ let g:any_jump_references_only_for_current_filetype = 0
 " Disable search engine ignore vcs untracked files
 " (default: false, search engine will ignore vcs untracked files)
 let g:any_jump_disable_vcs_ignore = 0
+
+" highlight tabs and trailing whitespaces
+" highlight ExtraWhitespace ctermbg=black guibg=black
+" match ExtraWhitespace /\s\+$\|\t/
