@@ -43,6 +43,8 @@ set noswapfile              " disable creating swap file
 set background=dark
 set omnifunc=syntaxcomplete
 
+autocmd BufNewFile,BufRead *.v,*.sv set syntax=verilog
+
 let mapleader = ","
 map <leader>t <ESC>:tabnew<CR>
 nmap <leader>z <ESC>:tabprevious<CR> 
